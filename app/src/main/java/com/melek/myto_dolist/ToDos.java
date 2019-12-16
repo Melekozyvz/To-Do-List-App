@@ -1,9 +1,8 @@
 package com.melek.myto_dolist;
 
-import android.support.annotation.Nullable;
 
 public class ToDos  {
-    enum Priority{
+  /*  enum Priority{
         HIGH,
         NORMAL,
         LOW
@@ -11,20 +10,20 @@ public class ToDos  {
     enum Status{
         DONE,
         NOTDONE
-    }
+    }*/
     private int Id;
     private String toDo;
-    private Priority priority;
-    private String category;
-    private Status status;
-    public ToDos(String text, Priority priority, @Nullable String category,Status status){
+    private int priority;
+    private int category;
+    private int status;
+    public ToDos(){
+
+    }
+    public ToDos(String text, int priority, int category,int status){
         this.toDo=text;
         this.priority=priority;
         this.status=status;
-
-        if(category!=null){
-            this.category=category;
-        }
+        this.category=category;
     }
 
     public int getId() {
@@ -35,11 +34,11 @@ public class ToDos  {
         Id = id;
     }
 
-    public Status getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -51,19 +50,19 @@ public class ToDos  {
         this.toDo = toDo;
     }
 
-    public Priority getPriority() {
+    public int getPriority() {
         return priority;
     }
 
-    public void setPriority(Priority priority) {
+    public void setPriority(int priority) {
         this.priority = priority;
     }
 
-    public String getCategory() {
+    public int getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(int category) {
         this.category = category;
     }
 }

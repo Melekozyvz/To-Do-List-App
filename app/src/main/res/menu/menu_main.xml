@@ -2,9 +2,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.melek.myto_dolist.MainActivity">
+
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_categoies"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/action_categories"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_priorities"
+        android:orderInCategory="100"
+        android:title="@string/action_priorities"
+        app:showAsAction="never" />
+   <item
+       android:id="@+id/action_done"
+       android:orderInCategory="100"
+       android:title="@string/action_done"
+       app:showAsAction="never"
+       />
 </menu>

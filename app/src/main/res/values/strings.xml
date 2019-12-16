@@ -3,4 +3,24 @@
     <string name="action_settings">Settings</string>
 
     <string name="add_todo">To-Do Ekle</string>
+
+    <!-- Add to do Form stuff-->
+    <string name="lblTodo">To-Do:</string>
+    <string name="category">Kategori:</string>
+    <string name="priority">Öncelik:</string>
+    <string name="save">Kaydet</string>
+    <string name="cansel">Iptal</string>
+
+    <string name="addcategoriy">Kategori Ekle</string>
+
+    <string name="add_priority">Öncelik Ekle</string>
+
+    <string name="action_categories">Kategoriler</string>
+
+    <string name="action_priorities">Öncelikler</string>
+
+    <!-- popup menu-->
+    <string name="delete">Sil</string>
+    <string name="update">Güncelle</string>
+    <string name="action_done">Yapılanlar</string>
 </resources>
