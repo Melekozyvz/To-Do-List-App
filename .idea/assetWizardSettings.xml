@@ -21,6 +21,20 @@
                                       <entry key="assetType" value="IMAGE" />
                                       <entry key="iconShape" value="CIRCLE" />
                                       <entry key="imageAsset" value="C:\Users\Melek\Downloads\ic_launcher.png" />
+                                      <entry key="outputName" value="ic_filter" />
+                                    </map>
+                                  </option>
+                                </PersistentState>
+                              </value>
+                            </entry>
+                            <entry key="notification">
+                              <value>
+                                <PersistentState>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="imageAsset" value="C:\Users\Melek\Downloads\todo_icon_filter.png" />
+                                      <entry key="outputName" value="ic_filter" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -30,7 +44,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputIconType" value="LAUNCHER_LEGACY" />
+                            <entry key="outputIconType" value="NOTIFICATION" />
                           </map>
                         </option>
                       </PersistentState>

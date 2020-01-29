@@ -1,9 +1,11 @@
 package com.melek.myto_dolist;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -75,19 +77,9 @@ public class Database extends SQLiteOpenHelper {
     public void addTODO(ToDos todo){
 
         SQLiteDatabase db = this.getWritableDatabase();
-      /*  ContentValues values = new ContentValues();
-        values.put(TEST_DERS_ADI, dersAdi);
-        values.put(TEST_KONU_ADI, konuAdi);
-        values.put(TEST_KONU_SS, ss);
-        values.put(TEST_KONU_DS, ds);
-        values.put(TEST_KONU_YS, ys);
-        values.put(TEST_KONU_BS, bs);
-        values.put(TEST_KONU_NET, net);
-*/
         String sorgu="INSERT INTO "+TABLE_NAME+"("+TODO_NAME+","+TODO_CAT_ID+","+TODO_PRIO_ID+","+TODO_STATUS+") VALUES('"+todo.getToDo()+"','"+todo.getCategory()+"','"+todo.getPriority()+"','"+todo.getStatus()+"')";
 
         db.execSQL(sorgu);
-        /* db.insert(TABLE_NAME, null, values);*/
         db.close(); //Database Bağlantısını kapattık
     }
     public void addCAT(String category){
@@ -105,7 +97,6 @@ public class Database extends SQLiteOpenHelper {
 
         String sorgu="INSERT INTO "+PRIO_TABLE_NAME+"("+PRIO_NAME+") VALUES('"+priority+"')";
         db.execSQL(sorgu);
-        /* db.insert(TABLE_NAME, null, values);*/
         db.close(); //Database Bağlantısını kapattık
     }
     public ToDos TODOs(int id){
@@ -179,7 +170,26 @@ public class Database extends SQLiteOpenHelper {
 
         return toDosArrayList;
     }
-    public ArrayList<String> getAllCategories(){
+    public ArrayList<Category> getAllCategories(){
+
+        //Bu methodda ise tablodaki tüm değerleri alıyoruz
+        //olusturdugumuz tüm nesneleri ArrayList e atıp geri dönüyoruz(return).
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT * FROM " + CAT_TABLE_NAME;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        ArrayList<Category> categoriesArrayList = new ArrayList<Category>();
+
+        if (cursor.moveToFirst()) {
+            do {
+                Category category=new Category(cursor.getInt(0),cursor.getString(1));
+                categoriesArrayList.add(category);
+            } while (cursor.moveToNext());
+        }
+        db.close();
+        return categoriesArrayList;
+    }
+    public ArrayList<String> getAllCategoriesAsStrings(){
 
         //Bu methodda ise tablodaki tüm değerleri alıyoruz
         //olusturdugumuz tüm nesneleri ArrayList e atıp geri dönüyoruz(return).
@@ -197,7 +207,26 @@ public class Database extends SQLiteOpenHelper {
         db.close();
         return categoriesArrayList;
     }
-    public ArrayList<String> getAllPriorities(){
+    public ArrayList<Priority> getAllPriorities(){
+
+        //Bu methodda ise tablodaki tüm değerleri alıyoruz
+        //olusturdugumuz tüm nesneleri ArrayList e atıp geri dönüyoruz(return).
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT * FROM " + PRIO_TABLE_NAME;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        ArrayList<Priority> prioritiesArrayList = new ArrayList<Priority>();
+
+        if (cursor.moveToFirst()) {
+            do {
+                Priority priority=new Priority(cursor.getInt(0),cursor.getString(1));
+                prioritiesArrayList.add(priority);
+            } while (cursor.moveToNext());
+        }
+        db.close();
+        return prioritiesArrayList;
+    }
+    public ArrayList<String> getAllPrioritiesAsStrings(){
 
         //Bu methodda ise tablodaki tüm değerleri alıyoruz
         //olusturdugumuz tüm nesneleri ArrayList e atıp geri dönüyoruz(return).
@@ -240,8 +269,13 @@ public class Database extends SQLiteOpenHelper {
     public void updateCat(String cat,int id) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String update_query="UPDATE "+CAT_TABLE_NAME+" SET "+CAT_NAME+"='"+ cat+"' WHERE "+CAT_ID+"="+id;
-        db.execSQL(update_query);
+       // String update_query="UPDATE "+CAT_TABLE_NAME+" SET "+CAT_NAME+"='"+ cat+"' WHERE "+CAT_ID+"="+id;
+        ContentValues values = new ContentValues();
+        values.put(CAT_NAME, cat);
+        // updating row
+        db.update(CAT_TABLE_NAME, values, CAT_ID + " = ?",
+                new String[] { String.valueOf(id) });
+      //  db.execSQL(update_query);
         db.close();
     }
     public void updatePrio(String prio,int id) {
@@ -263,7 +297,9 @@ public class Database extends SQLiteOpenHelper {
     }
     public void delete(int id) {
         SQLiteDatabase db=this.getWritableDatabase();
-        db.execSQL("DELETE FROM "+TABLE_NAME+" WHERE "+TODO_ID+"="+id);
+      //  db.execSQL("DELETE FROM "+TABLE_NAME+" WHERE "+TODO_ID+"="+id);
+        db.delete(TABLE_NAME, TODO_ID + " = ?",
+                new String[] { String.valueOf(id) });
         //db.delete(TABLE_NAME,"id=?",new String[] { Integer.toString(id) });
     }
     public void resetTables(){
@@ -273,6 +309,41 @@ public class Database extends SQLiteOpenHelper {
         db.delete(TABLE_NAME, null, null);
         db.close();
     }
+    public ArrayList<ToDos> getFilteredToDos(@Nullable Category category,@Nullable Priority priority,int status){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT * FROM " + TABLE_NAME+" WHERE "+TODO_STATUS+"="+status;
+
+        if (category!=null){
+            selectQuery+=" AND "+TODO_CAT_ID+"="+category.getId();
+            if (priority!=null){
+                selectQuery+=" AND "+TODO_PRIO_ID+"="+priority.getId();
+            }
+        }else{
+           if (priority!=null){
+               selectQuery+=" AND "+TODO_PRIO_ID+"="+priority.getId();
+           }
+        }
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        ArrayList<ToDos> toDosArrayList = new ArrayList<ToDos>();
+
+        if (cursor.moveToFirst()) {
+            do {
+                ToDos td = new ToDos();
+                td.setId(cursor.getInt(0));
+                td.setToDo(cursor.getString(1));
+                td.setCategory(cursor.getInt(2));
+                td.setPriority(cursor.getInt(3));
+                td.setStatus(cursor.getInt(4));
+                toDosArrayList.add(td);
+            } while (cursor.moveToNext());
+        }
+        db.close();
+
+        return toDosArrayList;
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME);

@@ -13,6 +13,8 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.melek.myto_dolist.Adapter.CategoryAdapter;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -20,13 +22,13 @@ public class ViewCategoriesActivity extends AppCompatActivity {
 
     ListView listView;
     FloatingActionButton fab;
-    private ArrayList<String> categories;
+    private ArrayList<Category> categories;
     private ArrayList<String> selectedCategories;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_categories);
-        setTitle("Kategoriler");
+        setTitle(getText(R.string.categories_title));
         listView=findViewById(R.id.list);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -43,16 +45,21 @@ public class ViewCategoriesActivity extends AppCompatActivity {
        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
            @Override
            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
-               final PopupMenu popupMenu=new PopupMenu(ViewCategoriesActivity.this,listView);
+               final PopupMenu popupMenu=new PopupMenu(ViewCategoriesActivity.this,view);
                popupMenu.getMenuInflater().inflate(R.menu.popup_menu,popupMenu.getMenu());
                popupMenu.show();
+               final Category category=categories.get(i);
                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                    public boolean onMenuItemClick(MenuItem item) {
                         if (item.getItemId()==R.id.delete){
-                            MainActivity.db.deleteCategory(i+1);
+                            MainActivity.db.deleteCategory(category.getId());
+                            onResume();
                         }
                         if(item.getItemId()==R.id.update){
-
+                            Intent intent=new Intent(getApplicationContext(),UpdateCategory.class);
+                            intent.putExtra("updateCategoryName",category.getCategory());
+                            intent.putExtra("updateCategoryId",category.getId());
+                            startActivity(intent);
                         }
                        return true;
                    }
@@ -63,7 +70,7 @@ public class ViewCategoriesActivity extends AppCompatActivity {
            @Override
            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                selectedCategories=new ArrayList<>();
-               selectedCategories.add(categories.get(i));
+               selectedCategories.add(categories.get(i).getCategory());
                view.setBackgroundColor(Color.LTGRAY);
                return false;
            }
@@ -81,8 +88,9 @@ public class ViewCategoriesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         categories=MainActivity.db.getAllCategories();
-        ArrayAdapter<String> adapter=new ArrayAdapter<>(this,R.layout.lists,R.id.text,categories);
+        CategoryAdapter adapter=new CategoryAdapter(getApplicationContext(),categories);
         listView.setAdapter(adapter);
     }
 }

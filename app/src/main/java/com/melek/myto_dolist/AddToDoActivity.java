@@ -29,16 +29,16 @@ public class AddToDoActivity extends AppCompatActivity {
 
         spinner.setSelected(false);
         spinner1.setSelected(false);
-        final ArrayList<String> CatArrayList = MainActivity.db.getAllCategories();
+        final ArrayList<Category> CatArrayList = MainActivity.db.getAllCategories();
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, CatArrayList);
+        ArrayAdapter<Category> arrayAdapter = new ArrayAdapter<Category>(this, android.R.layout.simple_spinner_item, CatArrayList);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
 
 
-        final ArrayList<String> PrioArrayList = MainActivity.db.getAllPriorities();
+        final ArrayList<Priority> PrioArrayList = MainActivity.db.getAllPriorities();
 
-        ArrayAdapter<String> prioArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, PrioArrayList);
+        ArrayAdapter<Priority> prioArrayAdapter = new ArrayAdapter<Priority>(this, android.R.layout.simple_spinner_item, PrioArrayList);
         prioArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner1.setAdapter(prioArrayAdapter);
 
@@ -50,16 +50,18 @@ public class AddToDoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 ToDos toDos=new ToDos();
                 String txtTodo=editText.getText().toString();
-                if (txtTodo==null&&txtTodo.isEmpty()&&txtTodo=="")
-                    editText.setError("Bu alan boş olamaz");
+                if (txtTodo.equals(null)&&txtTodo.isEmpty()||txtTodo.equals(""))
+                    editText.setError(getText(R.string.lblempty_error));
                 else{
+                    Category selectedCat=(Category) spinner.getSelectedItem();
+                    Priority selectedPrio=(Priority) spinner1.getSelectedItem();
                     toDos.setToDo(txtTodo);
-                    toDos.setCategory((int) spinner.getSelectedItemId()+1);
-                    toDos.setPriority((int)spinner1.getSelectedItemId()+1);
+                    toDos.setCategory(selectedCat.getId());
+                    toDos.setPriority(selectedPrio.getId());
                     toDos.setStatus(0);
                     MainActivity.db.addTODO(toDos);
                     MainActivity.db.close();
-                    Toast.makeText(getApplicationContext(), "To-Do Eklendi.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getText(R.string.added_todo), Toast.LENGTH_LONG).show();
                     onBackPressed();
                 }
             }

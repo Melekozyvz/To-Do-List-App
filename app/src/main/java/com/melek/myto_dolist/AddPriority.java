@@ -20,10 +20,10 @@ public class AddPriority extends AddActivity {
         editText=findViewById(R.id.edtCategory);
 
         textView=findViewById(R.id.lblAdd);
-        textView.setText("Öncelik:");
+        textView.setText(getText(R.string.priority));
 
         titleText=findViewById(R.id.title);
-        titleText.setText("Öncelik Ekle");
+        titleText.setText(getText(R.string.add_priority));
 
         btnSave=findViewById(R.id.btnSave);
         btnCancel=findViewById(R.id.btnCancel);
@@ -35,12 +35,12 @@ public class AddPriority extends AddActivity {
 
                 String txtPrio=edtCategory.getText().toString();
                 if (txtPrio==null&&txtPrio.isEmpty()&&txtPrio=="")
-                    edtCategory.setError("Bu alan boş olamaz");
+                    edtCategory.setError(getText(R.string.lblempty_error));
                 else{
 
                     MainActivity.db.addPRIO(txtPrio);
                     MainActivity.db.close();
-                    Toast.makeText(getApplicationContext(), "Öncelik Eklendi.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getText(R.string.added_priority), Toast.LENGTH_LONG).show();
                     onBackPressed();
                 }
             }
@@ -52,5 +52,35 @@ public class AddPriority extends AddActivity {
                 onBackPressed();
             }
         });
+    }
+
+    @Override
+    public EditText getEdtCategory() {
+        return editText;
+    }
+
+    @Override
+    public void setEdtCategory(EditText edtCategory) {
+       this.editText=edtCategory;
+    }
+
+    @Override
+    public Button getBtnSave() {
+        return btnSave;
+    }
+
+    @Override
+    public void setBtnSave(Button btnSave) {
+       this.btnSave=btnSave;
+    }
+
+    @Override
+    public Button getBtnCancel() {
+       return btnCancel;
+    }
+
+    @Override
+    public void setBtnCancel(Button btnCancel) {
+       this.btnCancel=btnCancel;
     }
 }

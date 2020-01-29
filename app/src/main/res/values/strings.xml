@@ -12,12 +12,35 @@
     <string name="cansel">Iptal</string>
 
     <string name="addcategoriy">Kategori Ekle</string>
+    <string name="update_category">Kategori Güncelle</string>
+    <string name="updated_category">Kategori Güncellendi.</string>
 
     <string name="add_priority">Öncelik Ekle</string>
+    <string name="action_priorities">Öncelikler</string>
+    <string name="update_priority">Öncelik Güncelle</string>
+    <string name="updated_priority">Öncelik Güncellendi.</string>
+
+
 
     <string name="action_categories">Kategoriler</string>
 
-    <string name="action_priorities">Öncelikler</string>
+
+    <!-- add priority Activity-->
+    <string name="lblpriority">Öncelik:</string>
+
+    <!--Errors-->
+    <string name="lblempty_error">Bu alan boş olamaz</string>
+
+    <!-- information-->
+    <string name="added_priority">Öncelik Eklendi.</string>
+    <string name="added_category">Kategori Eklendi.</string>
+    <string name="added_todo">To Do Eklendi.</string>
+
+    <!-- Titles-->
+    <string name="main_title">Yapılacaklar</string>
+    <string name="maded_title">Yapılanlar</string>
+    <string name="categories_title">Kategoriler</string>
+    <string name="priorities_title">Öncelikler</string>
 
     <!-- popup menu-->
     <string name="delete">Sil</string>

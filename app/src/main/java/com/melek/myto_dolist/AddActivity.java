@@ -29,13 +29,12 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 String txtCategory=edtCategory.getText().toString();
-                if (txtCategory==null&&txtCategory.isEmpty()&&txtCategory=="")
-                    edtCategory.setError("Bu alan boş olamaz");
+                if (txtCategory.equals(null)||txtCategory.isEmpty()||txtCategory.equals(""))
+                    edtCategory.setError(getText(R.string.lblempty_error));
                 else{
-
                     MainActivity.db.addCAT(txtCategory);
                     MainActivity.db.close();
-                    Toast.makeText(getApplicationContext(), "Kategori Eklendi.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getText(R.string.added_category), Toast.LENGTH_LONG).show();
                     onBackPressed();
                 }
             }
@@ -47,5 +46,29 @@ public class AddActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+    }
+    public EditText getEdtCategory() {
+        return edtCategory;
+    }
+
+
+    public void setEdtCategory(EditText edtCategory) {
+        this.edtCategory = edtCategory;
+    }
+
+    public Button getBtnSave() {
+        return btnSave;
+    }
+
+    public void setBtnSave(Button btnSave) {
+        this.btnSave = btnSave;
+    }
+
+    public Button getBtnCancel() {
+        return btnCancel;
+    }
+
+    public void setBtnCancel(Button btnCancel) {
+        this.btnCancel = btnCancel;
     }
 }

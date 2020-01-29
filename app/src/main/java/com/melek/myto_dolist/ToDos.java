@@ -2,15 +2,7 @@ package com.melek.myto_dolist;
 
 
 public class ToDos  {
-  /*  enum Priority{
-        HIGH,
-        NORMAL,
-        LOW
-    }
-    enum Status{
-        DONE,
-        NOTDONE
-    }*/
+
     private int Id;
     private String toDo;
     private int priority;
@@ -64,5 +56,10 @@ public class ToDos  {
 
     public void setCategory(int category) {
         this.category = category;
+    }
+
+    @Override
+    public String toString() {
+        return toDo;
     }
 }
