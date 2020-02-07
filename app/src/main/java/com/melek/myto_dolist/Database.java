@@ -2,6 +2,7 @@ package com.melek.myto_dolist;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -54,6 +55,15 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL(CREATE_CAT_TABLE);
         db.execSQL(CREATE_PRIO_TABLE);
 
+        //Adding defaults
+        db.execSQL("INSERT INTO "+PRIO_TABLE_NAME+"("+PRIO_NAME+") VALUES('"+MainActivity.appContext.getString(R.string.low)+"')");
+        db.execSQL("INSERT INTO "+PRIO_TABLE_NAME+"("+PRIO_NAME+") VALUES('"+MainActivity.appContext.getString(R.string.medium)+"')");
+        db.execSQL("INSERT INTO "+PRIO_TABLE_NAME+"("+PRIO_NAME+") VALUES('"+MainActivity.appContext.getString(R.string.high)+"')");
+
+        db.execSQL("INSERT INTO "+CAT_TABLE_NAME+"("+CAT_NAME+") VALUES('"+MainActivity.appContext.getString(R.string.work)+"')");
+        db.execSQL("INSERT INTO "+CAT_TABLE_NAME+"("+CAT_NAME+") VALUES('"+MainActivity.appContext.getString(R.string.school)+"')");
+        db.execSQL("INSERT INTO "+CAT_TABLE_NAME+"("+CAT_NAME+") VALUES('"+MainActivity.appContext.getString(R.string.shopping)+"')");
+        db.execSQL("INSERT INTO "+CAT_TABLE_NAME+"("+CAT_NAME+") VALUES('"+MainActivity.appContext.getString(R.string.health)+"')");
 
     }
     public void deleteTODO(int id){

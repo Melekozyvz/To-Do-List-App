@@ -1,6 +1,8 @@
 package com.melek.myto_dolist;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -24,6 +26,7 @@ import android.widget.Toast;
 import com.melek.myto_dolist.Adapter.ToDoAdapter;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     ListView toDosList;
@@ -43,11 +46,20 @@ public class MainActivity extends AppCompatActivity {
     private Priority selectedPriority=null;
     private boolean isFilterMode=false;
     private int status=0;
+    public static Context appContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        appContext=getApplicationContext();
+        //Setting language file
+        Locale locale=Locale.getDefault();
+        locale.setDefault(locale);
+        Configuration config=new Configuration();
+        config.setLocale(locale);
+        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
 
         db = new Database(getApplicationContext()); // Db bağlantısı oluşturuyoruz. İlk seferde database oluşturulur.
+
         setContentView(R.layout.activity_main);
        // getApplicationContext().deleteDatabase("sqllite_database");
         toDos=new ArrayList<ToDos>();
@@ -205,25 +217,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (toDos.size()==0||toDos==null){
+
+        if (status==0){
             super.onBackPressed();
         }else{
-            if (toDos.get(0).getStatus()==0) {
-                super.onBackPressed();
-
-            }else{
-                toDosList = findViewById(R.id.todoList);
-                status=0;
-                toDos=db.todos();
-                Toast.makeText(getApplicationContext(),"status: "+status,Toast.LENGTH_LONG).show();
-                toolbar.setTitle(getText(R.string.main_title));
-                toDoAdapter = new ToDoAdapter(getApplicationContext(),toDos);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                toDosList.setAdapter(toDoAdapter);
-            }
+            toDosList = findViewById(R.id.todoList);
+            status=0;
+            toDos=db.todos();
+            toolbar.setTitle(getText(R.string.main_title));
+            toDoAdapter = new ToDoAdapter(getApplicationContext(),toDos);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            toDosList.setAdapter(toDoAdapter);
         }
-
-        }
+    }
 
     @Override
     protected void onResume() {
